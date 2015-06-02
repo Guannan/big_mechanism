@@ -26,6 +26,11 @@ def _clean_text(word):
 	return word
 
 def _parse_unigram(text_list):
+	"""
+	Returns a dictionary of unigrams
+	with the keys being the words and 
+	the columns being the occurrences
+	"""
 	unigrams = collections.defaultdict(int)
 
 	for text in text_list:
@@ -39,6 +44,11 @@ def _parse_unigram(text_list):
 	return unigrams
 
 def _parse_bigram(text_list):
+	"""
+	Returns a dictionary of bigrams
+	with the keys being the words and 
+	the columns being the occurrences
+	"""
 	bigrams = collections.defaultdict(int)
 
 	for text in text_list:
@@ -56,6 +66,11 @@ def _parse_bigram(text_list):
 	return bigrams
 
 def _parse_trigram(text_list):
+	"""
+	Returns a dictionary of trigrams
+	with the keys being the words and 
+	the columns being the occurrences
+	"""
 	trigrams = collections.defaultdict(int)
 
 	for text in text_list:
@@ -75,6 +90,8 @@ def _parse_trigram(text_list):
 
 	return trigrams
 
+
+# main
 papers = collections.defaultdict(dict)
 pmcid = ''
 title = ''
@@ -98,14 +115,20 @@ papers[pmcid] = {'title':title, 'abstract':abstract}
 title_list = []
 abstract_list = []
 
-# for pmcid, values in papers.iteritems():
-# 	print 'PMCID: ' + pmcid
-# 	print 'Title: ' + values['title']
-# 	print 'Abstract: ' + values['abstract']
+for pmcid, values in papers.iteritems():
+	if int(pmcid[-1]) in [7,8,9,0]:
+		pass
+	else:
+		print 'PMCID: ' + pmcid
+		print 'Title: ' + values['title']
+		print 'Abstract: ' + values['abstract']
 
 for pmcid, values in papers.iteritems():
-	title_list.append(values['title'])
-	abstract_list.append(values['abstract'])
+	if int(pmcid[-1]) in [7,8,9,0]:
+		pass
+	else:
+		title_list.append(values['title'])
+		abstract_list.append(values['abstract'])
 
 # unigrams = _parse_unigram(title_list)
 # sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
@@ -132,7 +155,7 @@ for pmcid, values in papers.iteritems():
 # for word, count in reversed(sorted_trigrams):
 # 	print word, str(count)
 
-trigrams = _parse_trigram(abstract_list)
-sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
-for word, count in reversed(sorted_trigrams):
-	print word, str(count)
+# trigrams = _parse_trigram(abstract_list)
+# sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
+# for word, count in reversed(sorted_trigrams):
+# 	print word, str(count)
