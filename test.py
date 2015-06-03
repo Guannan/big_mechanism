@@ -181,7 +181,7 @@ def _parse_labeled_data():
 	global training_data_label
 	global test_data_label
 
-	random.seed(0)
+	random.seed()
 	labeled_data = collections.defaultdict(str)
 	training_data_label = collections.defaultdict(str)
 	test_data_label = collections.defaultdict(str)
@@ -200,54 +200,76 @@ def _train():
 	global training_data_label
 	global log_likelihood
 
-	word_occurrence_prob = collections.defaultdict(int)
+	word_occurrence = collections.defaultdict(int)
 	log_likelihood = collections.defaultdict(float)
 
 	good_count = 0
 	for pmcid, values in papers.iteritems():
 		id_num = pmcid[3:]  # remove 'PMC' tag
 		if training_data_label[id_num] == 'Y':
-			unigrams = _parse_unigram(values['title'])
+			unigrams = _parse_unigram([values['title']])
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
-			unigrams = _parse_unigram(values['abstract'])			
+				word_occurrence[word] += count
+			unigrams = _parse_unigram([values['abstract']])			
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
+				word_occurrence[word] += count
 			good_count += 1
 		elif training_data_label[id_num] == '?':  # calling maybe articles as good
-			unigrams = _parse_unigram(values['title'])	
+			unigrams = _parse_unigram([values['title']])	
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
-			unigrams = _parse_unigram(values['abstract'])			
+				word_occurrence[word] += count
+			unigrams = _parse_unigram([values['abstract']])			
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
+				word_occurrence[word] += count
 			good_count += 1
-		# elif training_data_label[id_num] == 'N':
 
-	for word, count in word_occurrence_prob.iteritems()
+	feature_count = 100
+	cur_feature_num = 0
+	sorted_word_occurrence = sorted(word_occurrence.items(), key=operator.itemgetter(1))
+	for word, count in reversed(sorted_word_occurrence):
 		log_likelihood[word] = math.log(float(count)/good_count)
+		cur_feature_num += 1
+		if cur_feature_num >= feature_count:
+			return
+		# print word, log_likelihood[word]
 
 def _test():
 	global papers
 	global test_data_label
 	global log_likelihood
 
-	word_occurrence_prob = collections.defaultdict(int)
-	log_likelihood = collections.defaultdict(float)
-
+	ll = 0
+	predictions = collections.defaultdict(str)
 	for pmcid, values in papers.iteritems():
 		id_num = pmcid[3:]  # remove 'PMC' tag
 		if test_data_label[id_num]:
-			unigrams = _parse_unigram(values['title'])
+			unigrams = _parse_unigram([values['title']])
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
-			unigrams = _parse_unigram(values['abstract'])	
+				if log_likelihood[word] > 0 or log_likelihood[word] < 0:
+					ll += log_likelihood[word]   # TODO use count here?
+			unigrams = _parse_unigram([values['abstract']])	
 			for word, count in unigrams.iteritems():
-				word_occurrence_prob[word] += count
+				if log_likelihood[word] > 0 or log_likelihood[word] < 0:
+					ll += log_likelihood[word]
+			if ll < -2:
+				predictions[id_num] = 'N'
+			else:
+				predictions[id_num] = '?'
+		ll = 0
 
-	# TODO fix
-	for word, count in word_occurrence_prob.iteritems()
-		log_likelihood[word] += math.log(float(count)/len(training_data_label))
+	correct = 0
+	for id_num, prediction in predictions.iteritems():
+		if test_data_label[id_num] == 'N' and predictions[id_num] == 'N':
+			correct += 1
+		elif test_data_label[id_num] == '?' and predictions[id_num] == '?':
+			correct += 1
+		elif test_data_label[id_num] == 'Y' and predictions[id_num] == '?':
+			correct += 1
+
+	print 'Predictions made : ', len(predictions)
+	print 'Test dataset size : ', len(test_data_label)
+	print 'Accuracy : ', float(correct)/len(predictions)
+	print len(log_likelihood)
 
 def main(argv):
 	global stop_words
@@ -326,7 +348,8 @@ def main(argv):
 		stop_words.append(line.rstrip())
 
 	_train()
-	_generate_ngrams()
+	_test()
+	# _generate_ngrams()
 
 	print 'Good articles : ', good_count
 	print 'Bad articles : ', bad_count
