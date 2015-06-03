@@ -14,15 +14,25 @@ def _complete():
 		if '  - ' not in line and ' - ' not in line:
 			output += ' ' + line.strip()
 		else:
-			return output			
+			return output
 	return output
 
 def _clean_text(word):
 	"""
 	Removes punctuation information
 	"""
+	global stop_words
 	chars_to_remove = ['.', ',', '?', '!', '*']
 	word = word.translate(None, ''.join(chars_to_remove))
+	if word in stop_words:
+		return None
+	return word
+
+def _get_word(words):
+	word = None
+	while word == None:
+		next_word = 
+		word = _clean_text(next_word)
 	return word
 
 def _parse_unigram(text_list):
@@ -121,45 +131,57 @@ def _generate_ngrams():
 	for word, count in reversed(sorted_trigrams):
 		print word, str(count)
 
+def main(argv):
+	global stop_words
+	papers = collections.defaultdict(dict)
+	pmcid = ''
+	title = ''
+	abstract = ''
 
+	for line in sys.stdin:
+		if 'PMC - ' in line:
+			if pmcid != '':
+				papers[pmcid] = {'title':title, 'abstract':abstract}
+			pmcid = line.strip().split(' ')[-1]
+			title = ''
+			abstract = ''
+		elif 'TI  -' in line:
+			title = line.strip().split('TI  - ')[-1]
+			title += _complete()
+		elif 'AB  -' in line:
+			abstract = line.strip().split('AB  - ')[-1]
+			abstract += _complete()
+	papers[pmcid] = {'title':title, 'abstract':abstract}
 
-# main
-papers = collections.defaultdict(dict)
-pmcid = ''
-title = ''
-abstract = ''
+	title_list = []
+	abstract_list = []
 
-for line in sys.stdin:
-	if 'PMC - ' in line:
-		if pmcid != '':
-			papers[pmcid] = {'title':title, 'abstract':abstract}
-		pmcid = line.strip().split(' ')[-1]
-		title = ''
-		abstract = ''
-	elif 'TI  -' in line:
-		title = line.strip().split('TI  - ')[-1]
-		title += _complete()
-	elif 'AB  -' in line:
-		abstract = line.strip().split('AB  - ')[-1]
-		abstract += _complete()
-papers[pmcid] = {'title':title, 'abstract':abstract}
+	# for pmcid, values in papers.iteritems():
+	# 	if int(pmcid[-1]) in [7,8,9,0]:
+	# 		pass
+	# 	else:
+	# 		print 'PMCID: ' + pmcid
+	# 		print 'Title: ' + values['title']
+	# 		print 'Abstract: ' + values['abstract']
 
-title_list = []
-abstract_list = []
+	for pmcid, values in papers.iteritems():
+		if int(pmcid[-1]) in [7,8,9,0]:
+			pass
+		else:
+			title_list.append(values['title'])
+			abstract_list.append(values['abstract'])
 
-for pmcid, values in papers.iteritems():
-	if int(pmcid[-1]) in [7,8,9,0]:
-		pass
-	else:
-		print 'PMCID: ' + pmcid
-		print 'Title: ' + values['title']
-		print 'Abstract: ' + values['abstract']
+	# _generate_ngrams()
 
-for pmcid, values in papers.iteritems():
-	if int(pmcid[-1]) in [7,8,9,0]:
-		pass
-	else:
-		title_list.append(values['title'])
-		abstract_list.append(values['abstract'])
+	stop_words = []
+	for line in open("common_words.txt", 'r'):
+		stop_words.append(line.rstrip())
 
-_generate_ngrams()
+	unigrams = _parse_unigram(abstract_list)
+	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
+	for word, count in reversed(sorted_unigrams):
+		print word, str(count)
+
+if __name__ == '__main__': 
+	main(sys.argv)
+
