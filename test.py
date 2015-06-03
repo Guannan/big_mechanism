@@ -231,7 +231,7 @@ def _train():
 		cur_feature_num += 1
 		if cur_feature_num >= feature_count:
 			return
-		# print word, log_likelihood[word]
+		print word, log_likelihood[word]
 
 def _test():
 	global papers
