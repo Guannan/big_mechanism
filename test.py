@@ -31,13 +31,6 @@ def _clean_text(word):
 		return None
 	return word
 
-# def _get_word(words):
-# 	word = None
-# 	while word == None:
-# 		next_word = 
-# 		word = _clean_text(next_word)
-# 	return word
-
 def _parse_unigram(text_list):
 	"""
 	Returns a dictionary of unigrams
@@ -70,12 +63,11 @@ def _parse_bigram(text_list):
 		for i in xrange(len(words)-1):
 			word_one = words[i]
 			word_one = _clean_text(word_one)
-			word_one = word_one.lower()
 			word_two = words[i + 1]
 			word_two = _clean_text(word_two)
-			word_two = word_two.lower()
-			bigram = ' '.join([word_one, word_two])
-			bigrams[bigram] += 1
+			if word_one != None and word_two != None:
+				bigram = ' '.join([word_one, word_two])
+				bigrams[bigram] += 1
 
 	return bigrams
 
@@ -92,51 +84,105 @@ def _parse_trigram(text_list):
 		for i in xrange(len(words)-2):
 			word_one = words[i]
 			word_one = _clean_text(word_one)
-			word_one = word_one.lower()
 			word_two = words[i + 1]
 			word_two = _clean_text(word_two)
-			word_two = word_two.lower()
 			word_three = words[i + 2]
 			word_three = _clean_text(word_three)
-			word_three = word_three.lower()
-			trigram = ' '.join([word_one, word_two, word_three])
-			trigrams[trigram] += 1
+			if word_one != None and word_two != None and word_three != None:
+				trigram = ' '.join([word_one, word_two, word_three])
+				trigrams[trigram] += 1
 
 	return trigrams
 
 def _generate_ngrams():
-	unigrams = _parse_unigram(title_list)
+	global good_count
+	global bad_count
+	global title_list_good
+	global title_list_bad
+	global abstract_list_good
+	global abstract_list_bad
+
+	unigrams = _parse_unigram(title_list_good)
 	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_unigram_title.txt', 'w')
 	for word, count in reversed(sorted_unigrams):
-		print word, str(count)
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
 
-	unigrams = _parse_unigram(abstract_list)
+	unigrams = _parse_unigram(title_list_bad)
 	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_unigram_title.txt', 'w')
 	for word, count in reversed(sorted_unigrams):
-		print word, str(count)
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
 
-	bigrams = _parse_bigram(title_list)
+	unigrams = _parse_unigram(abstract_list_good)
+	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_unigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_unigrams):
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
+
+	unigrams = _parse_unigram(abstract_list_bad)
+	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_unigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_unigrams):
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
+
+	bigrams = _parse_bigram(title_list_good)
 	sorted_bigrams = sorted(bigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_bigram_title.txt', 'w')
 	for word, count in reversed(sorted_bigrams):
-		print word, str(count)
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
 
-	bigrams = _parse_bigram(abstract_list)
+	bigrams = _parse_bigram(title_list_bad)
 	sorted_bigrams = sorted(bigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_bigram_title.txt', 'w')
 	for word, count in reversed(sorted_bigrams):
-		print word, str(count)
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
 
-	trigrams = _parse_trigram(title_list)
-	sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
-	for word, count in reversed(sorted_trigrams):
-		print word, str(count)
+	bigrams = _parse_bigram(abstract_list_good)
+	sorted_bigrams = sorted(bigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_bigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_bigrams):
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
 
-	trigrams = _parse_trigram(abstract_list)
+	bigrams = _parse_bigram(abstract_list_bad)
+	sorted_bigrams = sorted(bigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_bigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_bigrams):
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
+
+	trigrams = _parse_trigram(title_list_good)
 	sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_trigram_title.txt', 'w')
 	for word, count in reversed(sorted_trigrams):
-		print word, str(count)
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
+
+	trigrams = _parse_trigram(title_list_bad)
+	sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_trigram_title.txt', 'w')
+	for word, count in reversed(sorted_trigrams):
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
+
+	trigrams = _parse_trigram(abstract_list_good)
+	sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
+	fh = open('good_trigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_trigrams):
+		fh.write(word + ' ' + str(float(count)/good_count) + '\n')
+
+	trigrams = _parse_trigram(abstract_list_bad)
+	sorted_trigrams = sorted(trigrams.items(), key=operator.itemgetter(1))
+	fh = open('bad_trigram_abstract.txt', 'w')
+	for word, count in reversed(sorted_trigrams):
+		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
 
 def main(argv):
 	global stop_words
+	global good_count
+	global bad_count
+	global unlabeled_count
+	global title_list_good
+	global title_list_bad
+	global abstract_list_good
+	global abstract_list_bad	
 	papers = collections.defaultdict(dict)
 	pmcid = ''
 	title = ''
@@ -161,6 +207,9 @@ def main(argv):
 	title_list_bad = []
 	abstract_list_good = []
 	abstract_list_bad = []
+	good_count = 0
+	bad_count = 0
+	unlabeled_count = 0
 
 	# for pmcid, values in papers.iteritems():
 	# 	if int(pmcid[-1]) in [7,8,9,0]:
@@ -178,28 +227,33 @@ def main(argv):
 	for pmcid, values in papers.iteritems():
 		if int(pmcid[-1]) in [7,8,9,0]:
 			pass
+			unlabeled_count += 1
 		else:
 			id_num = pmcid[3:]  # remove 'PMC' tag
 			if labeled_data[id_num] == 'Y':
 				title_list_good.append(values['title'])
 				abstract_list_good.append(values['abstract'])
+				good_count += 1
 			elif labeled_data[id_num] == '?':  # calling maybe articles as good
 				title_list_good.append(values['title'])
-				abstract_list_good.append(values['abstract'])	
+				abstract_list_good.append(values['abstract'])
+				good_count += 1
 			elif labeled_data[id_num] == 'N':
 				title_list_bad.append(values['title'])
 				abstract_list_bad.append(values['abstract'])
-
-	# _generate_ngrams()
+				bad_count += 1
+			else:
+				unlabeled_count += 1
 
 	stop_words = []
 	for line in open("common_words.txt", 'r'):
 		stop_words.append(line.rstrip())
 
-	unigrams = _parse_unigram(abstract_list_good)
-	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
-	for word, count in reversed(sorted_unigrams):
-		print word, str(count)
+	_generate_ngrams()
+
+	print 'Good articles : ', good_count
+	print 'Bad articles : ', bad_count
+	print 'unlabeled_count : ', unlabeled_count
 
 if __name__ == '__main__': 
 	main(sys.argv)
