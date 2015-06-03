@@ -22,18 +22,21 @@ def _clean_text(word):
 	Removes punctuation information
 	"""
 	global stop_words
-	chars_to_remove = ['.', ',', '?', '!', '*']
+	chars_to_remove = ['.', ',', '?', '!', '*', '(', ')']
 	word = word.translate(None, ''.join(chars_to_remove))
+	word = word.lower()
 	if word in stop_words:
+		return None
+	if 'http' in word:
 		return None
 	return word
 
-def _get_word(words):
-	word = None
-	while word == None:
-		next_word = 
-		word = _clean_text(next_word)
-	return word
+# def _get_word(words):
+# 	word = None
+# 	while word == None:
+# 		next_word = 
+# 		word = _clean_text(next_word)
+# 	return word
 
 def _parse_unigram(text_list):
 	"""
@@ -47,9 +50,10 @@ def _parse_unigram(text_list):
 		words = text.strip().split(' ')
 		for i in xrange(len(words)):
 			word = words[i]
-			word = _clean_text(word)  # TODO optimize
-			word = word.lower()
-			unigrams[word] += 1
+			temp = _clean_text(word)  # TODO optimize
+			if temp != None:
+				word = temp
+				unigrams[word] += 1
 
 	return unigrams
 
@@ -153,8 +157,10 @@ def main(argv):
 			abstract += _complete()
 	papers[pmcid] = {'title':title, 'abstract':abstract}
 
-	title_list = []
-	abstract_list = []
+	title_list_good = []
+	title_list_bad = []
+	abstract_list_good = []
+	abstract_list_bad = []
 
 	# for pmcid, values in papers.iteritems():
 	# 	if int(pmcid[-1]) in [7,8,9,0]:
@@ -164,12 +170,25 @@ def main(argv):
 	# 		print 'Title: ' + values['title']
 	# 		print 'Abstract: ' + values['abstract']
 
+	labeled_data = collections.defaultdict(str)
+	for line in open("labeled_preprocessing_data.txt", 'r'):
+		temp = line.strip().split(',')
+		labeled_data[temp[0]] = temp[1]  # match pmc id with labels Y, ?, N
+
 	for pmcid, values in papers.iteritems():
 		if int(pmcid[-1]) in [7,8,9,0]:
 			pass
 		else:
-			title_list.append(values['title'])
-			abstract_list.append(values['abstract'])
+			id_num = pmcid[3:]  # remove 'PMC' tag
+			if labeled_data[id_num] == 'Y':
+				title_list_good.append(values['title'])
+				abstract_list_good.append(values['abstract'])
+			elif labeled_data[id_num] == '?':  # calling maybe articles as good
+				title_list_good.append(values['title'])
+				abstract_list_good.append(values['abstract'])	
+			elif labeled_data[id_num] == 'N':
+				title_list_bad.append(values['title'])
+				abstract_list_bad.append(values['abstract'])
 
 	# _generate_ngrams()
 
@@ -177,7 +196,7 @@ def main(argv):
 	for line in open("common_words.txt", 'r'):
 		stop_words.append(line.rstrip())
 
-	unigrams = _parse_unigram(abstract_list)
+	unigrams = _parse_unigram(abstract_list_good)
 	sorted_unigrams = sorted(unigrams.items(), key=operator.itemgetter(1))
 	for word, count in reversed(sorted_unigrams):
 		print word, str(count)
