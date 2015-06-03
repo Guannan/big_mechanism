@@ -3,6 +3,8 @@
 import sys
 import collections
 import operator
+import random
+import math
 
 def _complete():
 	"""
@@ -174,6 +176,79 @@ def _generate_ngrams():
 	for word, count in reversed(sorted_trigrams):
 		fh.write(word + ' ' + str(float(count)/bad_count) + '\n')
 
+def _parse_labeled_data():
+	global labeled_data
+	global training_data_label
+	global test_data_label
+
+	random.seed(0)
+	labeled_data = collections.defaultdict(str)
+	training_data_label = collections.defaultdict(str)
+	test_data_label = collections.defaultdict(str)
+
+	for line in open("labeled_preprocessing_data.txt", 'r'):
+		temp = line.strip().split(',')
+		labeled_data[temp[0]] = temp[1]  # match pmc id with labels Y, ?, N
+		num = random.randint(0,99)
+		if num > 33:  # 1 and 2 divide
+			test_data_label[temp[0]] = temp[1]
+		else:
+			training_data_label[temp[0]] = temp[1]
+
+def _train():
+	global papers
+	global training_data_label
+	global log_likelihood
+
+	word_occurrence_prob = collections.defaultdict(int)
+	log_likelihood = collections.defaultdict(float)
+
+	good_count = 0
+	for pmcid, values in papers.iteritems():
+		id_num = pmcid[3:]  # remove 'PMC' tag
+		if training_data_label[id_num] == 'Y':
+			unigrams = _parse_unigram(values['title'])
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+			unigrams = _parse_unigram(values['abstract'])			
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+			good_count += 1
+		elif training_data_label[id_num] == '?':  # calling maybe articles as good
+			unigrams = _parse_unigram(values['title'])	
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+			unigrams = _parse_unigram(values['abstract'])			
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+			good_count += 1
+		# elif training_data_label[id_num] == 'N':
+
+	for word, count in word_occurrence_prob.iteritems()
+		log_likelihood[word] = math.log(float(count)/good_count)
+
+def _test():
+	global papers
+	global test_data_label
+	global log_likelihood
+
+	word_occurrence_prob = collections.defaultdict(int)
+	log_likelihood = collections.defaultdict(float)
+
+	for pmcid, values in papers.iteritems():
+		id_num = pmcid[3:]  # remove 'PMC' tag
+		if test_data_label[id_num]:
+			unigrams = _parse_unigram(values['title'])
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+			unigrams = _parse_unigram(values['abstract'])	
+			for word, count in unigrams.iteritems():
+				word_occurrence_prob[word] += count
+
+	# TODO fix
+	for word, count in word_occurrence_prob.iteritems()
+		log_likelihood[word] += math.log(float(count)/len(training_data_label))
+
 def main(argv):
 	global stop_words
 	global good_count
@@ -182,7 +257,11 @@ def main(argv):
 	global title_list_good
 	global title_list_bad
 	global abstract_list_good
-	global abstract_list_bad	
+	global abstract_list_bad
+	global labeled_data
+	global papers
+	global log_likelihood
+
 	papers = collections.defaultdict(dict)
 	pmcid = ''
 	title = ''
@@ -219,10 +298,7 @@ def main(argv):
 	# 		print 'Title: ' + values['title']
 	# 		print 'Abstract: ' + values['abstract']
 
-	labeled_data = collections.defaultdict(str)
-	for line in open("labeled_preprocessing_data.txt", 'r'):
-		temp = line.strip().split(',')
-		labeled_data[temp[0]] = temp[1]  # match pmc id with labels Y, ?, N
+	_parse_labeled_data()
 
 	for pmcid, values in papers.iteritems():
 		if int(pmcid[-1]) in [7,8,9,0]:
@@ -249,6 +325,7 @@ def main(argv):
 	for line in open("common_words.txt", 'r'):
 		stop_words.append(line.rstrip())
 
+	_train()
 	_generate_ngrams()
 
 	print 'Good articles : ', good_count
