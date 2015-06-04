@@ -24,6 +24,7 @@ def _clean_text(word):
 	Removes punctuation information
 	"""
 	global stop_words
+	global stem_patterns
 	chars_to_remove = ['.', ',', '?', '!', '*', '(', ')']
 	word = word.translate(None, ''.join(chars_to_remove))
 	word = word.lower()
@@ -31,6 +32,10 @@ def _clean_text(word):
 		return None
 	if 'http' in word:
 		return None
+	for stem_pattern in stem_patterns:
+		if word.endswith(stem_pattern):
+			word = word[:-len(stem_pattern)]
+			break
 	return word
 
 def _parse_unigram(text_list):
@@ -284,6 +289,7 @@ def _test():
 
 def main(argv):
 	global stop_words
+	global stem_patterns
 	global good_count
 	global bad_count
 	global unlabeled_count
@@ -357,9 +363,13 @@ def main(argv):
 	for line in open("common_words.txt", 'r'):
 		stop_words.append(line.rstrip())
 
+	stem_patterns = []
+	for line in open("stems.txt", 'r'):
+		stem_patterns.append(line.rstrip())
+
 	_train()
 	_test()
-	_generate_ngrams()
+	# _generate_ngrams()
 
 	print 'Good articles : ', good_count
 	print 'Bad articles : ', bad_count
