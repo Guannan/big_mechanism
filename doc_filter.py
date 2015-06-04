@@ -45,7 +45,12 @@ def _parse_unigram(text_list):
 	the columns being the occurrences
 	"""
 	unigrams = collections.defaultdict(int)
+	doc_occurrence = collections.defaultdict(int)  # number of docs word occurs in
+	tf = collections.defaultdict(float)   # weighted frequency of word occurrence in 1 doc
+	total_doc_count = len(text_list)
 
+	counted = False
+	occurrence = collections.defaultdict(int)
 	for text in text_list:
 		words = text.strip().split(' ')
 		for i in xrange(len(words)):
@@ -54,8 +59,23 @@ def _parse_unigram(text_list):
 			if temp != None:
 				word = temp
 				unigrams[word] += 1
+				occurrence[word] += 1
+				if not counted:
+					doc_occurrence[word] += 1
+					counted = True
+		for word, count in occurrence.iteritems():
+			tf[word] += float(count)/total_doc_count
+		occurrence = collections.defaultdict(int)
+		counted = False
 
-	return unigrams
+	idf = collections.defaultdict(float)
+	for word, doc_count in doc_occurrence.iteritems():
+		idf[word] = math.log(float(total_doc_count)/doc_count)
+	
+	tf_idf = collections.defaultdict(float)
+	for word in idf:
+		tf_idf[word] += tf[word] * idf[word]
+	return unigrams, tf_idf
 
 def _parse_bigram(text_list):
 	"""
@@ -209,34 +229,56 @@ def _train():
 	log_likelihood = collections.defaultdict(float)
 
 	good_count = 0
+
+	tf_idf = collections.defaultdict(float)
+	for pmcid, values in papers.iteritems():
+		id_num = pmcid[3:]  # remove 'PMC' tag
+		if training_data_label[id_num]:
+			unigrams, scores = _parse_unigram([values['title']])
+			for word, count in scores.iteritems():
+				tf_idf[word] += scores[word]
+			unigrams, scores = _parse_unigram([values['abstract']])			
+			for word, count in scores.iteritems():
+				tf_idf[word] += scores[word]
+
 	for pmcid, values in papers.iteritems():
 		id_num = pmcid[3:]  # remove 'PMC' tag
 		if training_data_label[id_num] == 'Y':
-			unigrams = _parse_unigram([values['title']])
+			unigrams, junk = _parse_unigram([values['title']])
 			for word, count in unigrams.iteritems():
 				word_occurrence[word] += count
-			unigrams = _parse_unigram([values['abstract']])			
+			unigrams, junk = _parse_unigram([values['abstract']])			
 			for word, count in unigrams.iteritems():
 				word_occurrence[word] += count
 			good_count += 1
 		elif training_data_label[id_num] == '?':  # calling maybe articles as good
-			unigrams = _parse_unigram([values['title']])	
+			unigrams, junk = _parse_unigram([values['title']])	
 			for word, count in unigrams.iteritems():
 				word_occurrence[word] += count
-			unigrams = _parse_unigram([values['abstract']])			
+			unigrams, junk = _parse_unigram([values['abstract']])			
 			for word, count in unigrams.iteritems():
 				word_occurrence[word] += count
 			good_count += 1
 
-	feature_count = 100
+	feature_count = 20
 	cur_feature_num = 0
-	sorted_word_occurrence = sorted(word_occurrence.items(), key=operator.itemgetter(1))
-	for word, count in reversed(sorted_word_occurrence):
-		log_likelihood[word] = math.log(float(count)/good_count)
-		cur_feature_num += 1
+
+	sorted_tf_idf = sorted(tf_idf.items(), key=operator.itemgetter(1))
+	for word, count in reversed(sorted_tf_idf):
+		if word_occurrence[word] > 0:
+			print word, word_occurrence[word]			
+			log_likelihood[word] = math.log(float(word_occurrence[word])/good_count)
+			cur_feature_num += 1
 		if cur_feature_num >= feature_count:
 			return
-		print word, log_likelihood[word]
+
+	# sorted_word_occurrence = sorted(word_occurrence.items(), key=operator.itemgetter(1))
+	# for word, count in reversed(sorted_word_occurrence):
+	# 	log_likelihood[word] = math.log(float(count)/good_count)
+	# 	cur_feature_num += 1
+	# 	if cur_feature_num >= feature_count:
+	# 		return
+	# 	print word, log_likelihood[word]
 
 def _test():
 	global papers
@@ -248,11 +290,11 @@ def _test():
 	for pmcid, values in papers.iteritems():
 		id_num = pmcid[3:]  # remove 'PMC' tag
 		if test_data_label[id_num]:
-			unigrams = _parse_unigram([values['title']])
+			unigrams, junk = _parse_unigram([values['title']])
 			for word, count in unigrams.iteritems():
 				if log_likelihood[word] != 0.0:
 					ll += log_likelihood[word]   # TODO use count here?
-			unigrams = _parse_unigram([values['abstract']])	
+			unigrams, junk = _parse_unigram([values['abstract']])	
 			for word, count in unigrams.iteritems():
 				if log_likelihood[word] != 0.0:
 					ll += log_likelihood[word]
@@ -268,13 +310,13 @@ def _test():
 	fn = 0.0
 	for id_num, prediction in predictions.iteritems():
 		if test_data_label[id_num] == 'N' and predictions[id_num] == 'N':
-			tn += 1.0
-		elif test_data_label[id_num] in ['?','Y'] and predictions[id_num] == '?':
 			tp += 1.0
+		elif test_data_label[id_num] in ['?','Y'] and predictions[id_num] == '?':
+			tn += 1.0
 		elif test_data_label[id_num] in ['?','Y'] and predictions[id_num] == 'N':
-			fn += 1.0
-		elif test_data_label[id_num] == 'N' and predictions[id_num] == '?':
 			fp += 1.0
+		elif test_data_label[id_num] == 'N' and predictions[id_num] == '?':
+			fn += 1.0
 
 	print 'Predictions made : ', len(predictions)
 	print 'Test dataset size : ', len(test_data_label)
