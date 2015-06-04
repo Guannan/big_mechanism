@@ -257,18 +257,28 @@ def _test():
 				predictions[id_num] = '?'
 		ll = 0
 
-	correct = 0
+	tp = 0.0
+	tn = 0.0
+	fp = 0.0
+	fn = 0.0
 	for id_num, prediction in predictions.iteritems():
 		if test_data_label[id_num] == 'N' and predictions[id_num] == 'N':
-			correct += 1
-		elif test_data_label[id_num] == '?' and predictions[id_num] == '?':
-			correct += 1
-		elif test_data_label[id_num] == 'Y' and predictions[id_num] == '?':
-			correct += 1
+			tn += 1.0
+		elif test_data_label[id_num] in ['?','Y'] and predictions[id_num] == '?':
+			tp += 1.0
+		elif test_data_label[id_num] in ['?','Y'] and predictions[id_num] == 'N':
+			fn += 1.0
+		elif test_data_label[id_num] == 'N' and predictions[id_num] == '?':
+			fp += 1.0
 
 	print 'Predictions made : ', len(predictions)
 	print 'Test dataset size : ', len(test_data_label)
-	print 'Accuracy : ', float(correct)/len(predictions)
+	print 'Accuracy : ', float(tp+tn)/(tp+tn+fp+fn)
+	precision = float(tp)/(tp+fp)
+	print 'Precision : ', precision
+	recall = float(tp)/(tp+fn)
+	print 'Recall : ', recall
+	print 'F1 score : ', 2*float(recall*precision/(recall+precision))
 	print len(log_likelihood)
 
 def main(argv):
