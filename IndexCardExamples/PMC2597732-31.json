@@ -1,0 +1,38 @@
+{
+  "pmc_id": "PMC2597732",
+  "reading_started": "06:01:2015:14:07",
+  "reading_complete": "06:01:2015:14:07",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": true,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "FGFR3",
+      "in_model": true,
+      "identifier": "Uniprot:FGFR3_HUMAN",
+      "features": [{
+        "site": 248,
+        "from_base": "R",
+        "to_base": "C"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "STAT1",
+      "in_model": false,
+      "identifier": "Uniprot:STAT1_HUMAN",
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "adds_modification",
+    "modifications": [{
+      "site": 701,
+      "modification_type": "phosphorylation"
+    }]
+  },
+  "evidence": ["Cells were transfected with N540K, G380R, R248C, Y373C,\nK650M and K650E-FGFR3 mutants and analyzed for activatory\nSTAT1(Y701) phosphorylation 48 hours later. Figure 2 shows that\nonly the K650M and K650E mutants activated STAT1 in 293T\nand RCS cells, identically to the kinase assay data (Fig. 1)."]
+}

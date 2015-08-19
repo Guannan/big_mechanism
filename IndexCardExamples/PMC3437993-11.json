@@ -1,0 +1,25 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06/03/2014T14:09:15",
+  "reading_complete": "06/03/2014T14:18:15",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "specification",
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": null,
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "H-Ras",
+      "in_model": true,
+      "identifier": "Uniprot:RASH_HUMAN"
+    },
+    "interaction_type": "adds_modification",
+    "modifications": [{
+      "site": 0,
+      "modification_type": "ubiquitination"
+    }]
+  },
+  "evidence": ["We found that endogenous K-Ras and H-Ras underwent mono-ubiquitination in HEK293T cells. Di-ubiquitinated Ras was also detected but the amount was less than the mono-ubiquitinated form (Fig.1A right)."],
+  "model_elements": ["http://purl.org/pc2/7/BiochemicalReaction_fb67c84a06367fb1ead60f0000be62e5"]
+}

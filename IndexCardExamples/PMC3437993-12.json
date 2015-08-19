@@ -1,0 +1,40 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06/03/2015T17:49:00",
+  "reading_complete": "06/03/2015T17:49:00",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "interaction_type": "increases",
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein_family",
+      "entity_text": "RAS",
+      "in_model": false,
+      "features": [{
+        "site": 147,
+        "modification_type": "ubiquitination"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "complex",
+      "in_model": true,
+      "entities": [{
+        "entity_type": "protein_family",
+        "entity_text": "RAS",
+        "in_model": true,
+        "features": [],
+        "not_features": []
+      }, {
+        "entity_type": "chemical",
+        "entity_text": "32P-GTP",
+        "in_model": false,
+        "identifier": "6830"
+      }]
+    }
+  },
+  "evidence": ["Figure 2\nUbiquitination of K147, a conserved lysine in the G5 box, increases the fraction of GTP-bound Ras"]
+}

@@ -1,102 +1,41 @@
 #!/usr/bin/env python
-"""
-==================================================
-Plot different SVM classifiers in the iris dataset
-==================================================
 
-Comparison of different linear SVM classifiers on a 2D projection of the iris
-dataset. We only consider the first 2 features of this dataset:
+import sys
+import collections
+import operator
+import glob
 
-- Sepal length
-- Sepal width
+def _get_tableless_id():
+	global tableless_id
 
-This example shows how to plot the decision surface for four SVM classifiers
-with different kernels.
+	tableless_id = []
+	for line in open("no_table_papers.txt", 'r'):
+		tableless_id.append(line.strip())
 
-The linear models ``LinearSVC()`` and ``SVC(kernel='linear')`` yield slightly
-different decision boundaries. This can be a consequence of the following
-differences:
+def _parse_labeled_data(filename):
+  labeled_terms = collections.defaultdict(str)
 
-- ``LinearSVC`` minimizes the squared hinge loss while ``SVC`` minimizes the
-  regular hinge loss.
+  for line in open(filename, 'r'):
+    temp = line.strip().split("\t")
+    term_count = temp[0]
+    label = temp[1].split(" ")[0]
+    term = temp[2].strip()
+    labeled_terms[term] = label
 
-- ``LinearSVC`` uses the One-vs-All (also known as One-vs-Rest) multiclass
-  reduction while ``SVC`` uses the One-vs-One multiclass reduction.
+  return labeled_terms
 
-Both linear models have linear decision boundaries (intersecting hyperplanes)
-while the non-linear kernel models (polynomial or Gaussian RBF) have more
-flexible non-linear decision boundaries with shapes that depend on the kind of
-kernel and its parameters.
+def main(argv):
+  path = "BioNLP-ST_2013_CG_training_data/*.a1"
+  all_labeled_terms = collections.defaultdict(str)
 
-.. NOTE:: while plotting the decision function of classifiers for toy 2D
-   datasets can help get an intuitive understanding of their respective
-   expressive power, be aware that those intuitions don't always generalize to
-   more realistic high-dimensional problem.
+  for filename in glob.glob(path):
+    # filename = "BioNLP-ST_2013_CG_training_data/PMID-11387198.a1"
+    all_labeled_terms.update(_parse_labeled_data(filename))
 
-"""
-print(__doc__)
-
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import svm, datasets
-
-# import some data to play with
-iris = datasets.load_iris()
-X = iris.data[:, :2]  # we only take the first two features. We could
-                      # avoid this ugly slicing by using a two-dim dataset
-y = iris.target
-
-h = .02  # step size in the mesh
-
-# we create an instance of SVM and fit out data. We do not scale our
-# data since we want to plot the support vectors
-C = 1.0  # SVM regularization parameter
-svc = svm.SVC(kernel='linear', C=C).fit(X, y)
-rbf_svc = svm.SVC(kernel='rbf', gamma=0.7, C=C).fit(X, y)
-poly_svc = svm.SVC(kernel='poly', degree=3, C=C).fit(X, y)
-lin_svc = svm.LinearSVC(C=C).fit(X, y)
-
-# create a mesh to plot in
-x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                     np.arange(y_min, y_max, h))
-
-# title for the plots
-titles = ['SVC with linear kernel',
-          'LinearSVC (linear kernel)',
-          'SVC with RBF kernel',
-          'SVC with polynomial (degree 3) kernel']
+  for term, label in all_labeled_terms.iteritems():
+    print term + "--->" + label
 
 
-for i, clf in enumerate((svc, lin_svc, rbf_svc, poly_svc)):
-    # Plot the decision boundary. For that, we will assign a color to each
-    # point in the mesh [x_min, m_max]x[y_min, y_max].
-    plt.subplot(2, 2, i + 1)
-    plt.subplots_adjust(wspace=0.4, hspace=0.4)
-
-    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-
-    # Put the result into a color plot
-    Z = Z.reshape(xx.shape)
-    plt.contourf(xx, yy, Z, cmap=plt.cm.Paired, alpha=0.8)
-
-    # Plot also the training points
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Paired)
-    plt.xlabel('Sepal length')
-    plt.ylabel('Sepal width')
-    plt.xlim(xx.min(), xx.max())
-    plt.ylim(yy.min(), yy.max())
-    plt.xticks(())
-    plt.yticks(())
-    plt.title(titles[i])
-
-plt.show()
-
-
-# clf = tree.DecisionTreeClassifier()
-# iris = load_iris()
-# clf = clf.fit(iris.data, iris.target)
-# tree.export_graphviz(clf, out_file='tree.dot')  
-
+if __name__ == '__main__': 
+	main(sys.argv)
 

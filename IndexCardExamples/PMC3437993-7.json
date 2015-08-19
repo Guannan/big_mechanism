@@ -1,0 +1,31 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06-03-2015-16:59",
+  "reading_complete": "06-03-2015-17:03",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "K-Ras",
+      "in_model": true,
+      "identifier": "Uniprot:RASK_HUMAN",
+      "features": [],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein_family",
+      "entity_text": "tubulin",
+      "in_model": false,
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "binds",
+    "binding_site_a": "",
+    "binding_site_b": ""
+  },
+  "evidence": ["We observed that endogenous PLCε, Afadin,\nCalmodulin and Tubulin co-immunoprecipitated with G12V-K-Ras, however, these proteins\nwere not enriched in the immunoprecipitate of ubiquitinated G12V-K-Ras."]
+}

@@ -1,0 +1,44 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06-03-2015-16:02",
+  "reading_complete": "06-03-2015-15:59",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "complex",
+      "in_model": true,
+      "entities": [{
+        "entity_type": "protein",
+        "entity_text": "K-Ras",
+        "in_model": false,
+        "identifier": "Uniprot:RASK_HUMAN",
+        "features": [{
+          "site": 12,
+          "from_base": "G",
+          "to_base": "V"
+        }],
+        "not_features": []
+      }, {
+        "entity_type": "chemical",
+        "entity_text": "GTP",
+        "in_model": true,
+        "identifier": "PubChem:6830"
+      }]
+    },
+    "participant_b": {
+      "entity_type": "protein_family",
+      "entity_text": "Raf",
+      "in_model": false,
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "binds",
+    "binding_site_a": "",
+    "binding_site_b": ""
+  },
+  "evidence": ["Figure 3. Raf and PI3K bind more to ubiquitinated Ras than to non-ubiquitinated Ras\nUbiquitinated G12V-K-Ras shows enhanced binding specifically to Rafs and PI3K.", "Taken together, these results suggest that ubiquitinated GTP-KRas\nbinds more tightly to activate these effectors than non-ubiquitinated GTP-K-Ras does,\nor that the ubiquitin moiety plays an additional role in stimulating the activity of the bound\neffectors."]
+}

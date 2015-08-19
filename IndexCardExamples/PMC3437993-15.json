@@ -1,0 +1,47 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06/03/2015T17:49:00",
+  "reading_complete": "06/03/2015T17:49:00",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "RAS",
+      "in_model": false,
+      "identifier": "Uniprot:RASK_HUMAN",
+      "features": [{
+        "site": 147,
+        "from_base": "K",
+        "to_base": "L"
+      }, {
+        "modification_type": "ubiquitination"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "complex",
+      "in_model": true,
+      "entities": [{
+        "entity_type": "protein",
+        "entity_text": "K-Ras",
+        "in_model": true,
+        "identifier": "Uniprot:RASK_HUMAN",
+        "features": [],
+        "not_features": []
+      }, {
+        "entity_type": "protein",
+        "entity_text": "RBD",
+        "in_model": true,
+        "identifier": "Uniprot:RAF1_HUMAN",
+        "features": [],
+        "not_features": []
+      }]
+    },
+    "interaction_type": "decreases"
+  },
+  "evidence": ["however, mono-ubiquitinated K147L-K-Ras shows a reduced ability to bind to the RBD relative to the mono-ubiquitinated WT-K-Ras"]
+}

@@ -1,0 +1,207 @@
+Rows:  19
+Columns :  3
+{
+    "caption": [
+        "Methods for the enrichment of phosphoproteins and phosphopeptides for analysis by mass spectrometry"
+    ], 
+    "column": [
+        {
+            "data": [
+                {
+                    "data": "Chemical modification"
+                }, 
+                {
+                    "data": "Affinity tagging"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Fluorous affinity tagging"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Phosphospecific proteolyis"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Thiophosphorylation and affinity tagging"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Bio-orthogonal affinity purification"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Direct enrichment"
+                }, 
+                {
+                    "data": "Anti-phosphotyrosine antibodies"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Anti-phosphoserine and anti-phosphothreonine antibodies"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Immobilized metal affinity chromatography (IMAC)"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Cation exchange"
+                }
+            ], 
+            "header": {
+                "data": "Method"
+            }
+        }, 
+        {
+            "data": [
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Phosphorylated amino acids are derivatized by \u03b2-elimination or carbodiimide to introduce tags; \u03b2-elimination strategy is limited to P-Ser and P-Thr, and also occurs with O-glycosylated residues."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Perfluoroalkyl groups are selectively coupled to P-Ser and P-Thr using \u03b2-elimination; modified peptides are enriched with fluorous-functionalized stationary phase. This method is highly selective for derivatized peptides."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Chemical modification of P-Ser and P-Thr introduces lysine analogs and cleavage by lysine-specific proteases. This method allows direct identification of phosphorylation site without sequencing the phosphopeptide."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Proteins are phosphorylated with ATP3S; thiophosphates are alkylated to form linkages with biotin or solid supports. This method requires in vitro phosphorylation and most kinases utilize ATP3S poorly."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Analog-specific kinases are used selectively to phosphorylate substrates in vitro or in vivo; the phosphate analogs are then derivatized to generate a hapten for immunoprecipitation. This method requires expression and/or isolation of an engineered kinase."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Anti-P-Tyr antibodies have proven very useful for the enrichment of P-Tyr-containing proteins; they have been used alone or in combination with IMAC. They have been used to enrich P-Tyr peptides."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Anti-P-Ser and anti-P-Thr antibodies have been used, but currently are less useful than anti-P-Tyr antibodies."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Introduction of an esterification step greatly enhances the selectivity of this method, which is very useful, has been widely used and can be automated."
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "Strong cation exchange chromatography has been used for the large-scale identification of phosphorylation sites. This method selects for peptides phosphorylated on a single residue."
+                }
+            ], 
+            "header": {
+                "data": "Comments"
+            }
+        }, 
+        {
+            "data": [
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[46,47]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[48]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[49]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[50]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[51]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[31,33,52,53]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[54-56]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[29,57,58]"
+                }, 
+                {
+                    "data": ""
+                }, 
+                {
+                    "data": "[34]"
+                }
+            ], 
+            "header": {
+                "data": "References"
+            }
+        }
+    ], 
+    "source": {
+        "author": "Unknown", 
+        "paperTitle": "Unknown", 
+        "pmcId": "PMC1242200", 
+        "sourceFile": "PMC1242200T1.html"
+    }
+}

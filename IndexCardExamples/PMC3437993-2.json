@@ -1,0 +1,36 @@
+{
+  "pmc_id": "PMC3437993",
+  "reading_started": "06-03-2015-15:57",
+  "reading_complete": "06-03-2015-15:59",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "K-Ras",
+      "in_model": true,
+      "identifier": "Uniprot:RASK_HUMAN",
+      "features": [{
+        "site": 12,
+        "from_base": "G",
+        "to_base": "V"
+      }, {
+        "site": 0,
+        "modification_type": "ubiquitination"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein_family",
+      "entity_text": "PI3K",
+      "in_model": false,
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "increases_activity"
+  },
+  "evidence": ["Figure 4. Ubiquitinated Ras activates Raf and PI3K more than non-ubiquitinated Ras\n(A) The Ras-associated kinase activities of Raf and PI3K were compared by in vitro kinase\nassays (I.V.K; see Experimental Procedures). Aliquots of total Flag-G12V-K-Ras and\nubiquitinated K-Ras prepared in Fig. 3A were used."]
+}

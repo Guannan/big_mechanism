@@ -1,0 +1,34 @@
+{
+  "pmc_id": "PMC2597732",
+  "reading_started": "06:01:2015:14:19",
+  "reading_complete": "06:01:2015:14:21",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "FGFR3",
+      "in_model": true,
+      "identifier": "Uniprot:FGFR3_HUMAN",
+      "features": [{
+        "site": 650,
+        "from_base": "K",
+        "to_base": "E"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "STAT1",
+      "in_model": false,
+      "identifier": "Uniprot:STAT1_HUMAN",
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "increases_activity"
+  },
+  "evidence": ["Figure 2 shows that\nonly the K650M and K650E mutants activated STAT1 in 293T\nand RCS cells, identically to the kinase assay data (Fig. 1)."]
+}

@@ -1,0 +1,37 @@
+{
+  "pmc_id": "PMC2597732",
+  "reading_started": "06:01:2015:15:46",
+  "reading_complete": "06:01:2015:15:50",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "interaction_type": "increases",
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "FGFR3",
+      "in_model": true,
+      "identifier": "Uniprot:FGFR3_HUMAN",
+      "features": [{
+        "site": 650,
+        "from_base": "K",
+        "to_base": "M"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "STAT5",
+      "in_model": false,
+      "identifier": "Uniprot:STA5A_HUMAN",
+      "features": [{
+        "site": 694,
+        "modification_type": "phosphorylation"
+      }],
+      "not_features": []
+    }
+  },
+  "evidence": ["Figure 5 shows\nthat only the K650M and K650E mutants caused significant\nSTAT5(Y694) phosphorylation in RCS chondrocytes.", "Figure 5. STAT5 activation by FGFR3 mutants. RCS chondrocytes\ntransfected with vectors expressing wild-type FGFR3, activating FGFR3\nmutants (N540K, G380R, R248C, Y373C, K650M and K650E), and kinaseinactive\nmutant K508M were grown for 24 hours and analyzed for the\nindicated molecules by western blotting. Note the significant\nSTAT5(Y694) phosphorylation induced by K650M and K650E-FGFR3."]
+}

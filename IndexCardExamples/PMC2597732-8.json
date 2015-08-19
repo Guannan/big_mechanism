@@ -1,0 +1,37 @@
+{
+  "pmc_id": "PMC2597732",
+  "reading_started": "06:01:2015:15:33",
+  "reading_complete": "06:01:2015:14:34",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "interaction_type": "increases",
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "FGFR3",
+      "in_model": true,
+      "identifier": "Uniprot:FGFR3_HUMAN",
+      "features": [{
+        "site": 650,
+        "from_base": "K",
+        "to_base": "E"
+      }],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "ERK1",
+      "in_model": true,
+      "identifier": "Uniprot:MK03_HUMAN",
+      "features": [{
+        "site": 202,
+        "modification_type": "phosphorylation"
+      }],
+      "not_features": []
+    }
+  },
+  "evidence": ["This contrasts with ERK1/2 activation, which is induced by all six mutants in 293T and RCS cells\n(samples without FGF2 treatment).", "Vectors carrying the wild-type FGFR3 as well as\nthe N540K (HCH), G380R (ACH), R248C, Y373C, K650E (TD)\nand K650M (SADDAN and TD) mutants were expressed in CHO\ncells.", "In 293T and\nRCS cells, all six FGFR3 mutants induced activatory ERK(T202/Y204) phosphorylation (Fig. 2)."]
+}

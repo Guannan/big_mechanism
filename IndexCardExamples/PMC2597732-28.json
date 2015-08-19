@@ -1,0 +1,34 @@
+{
+  "pmc_id": "PMC2597732",
+  "reading_started": "06:01:2015:14:07",
+  "reading_complete": "06:01:2015:14:07",
+  "submitter": "MITRE",
+  "reader_type": "human",
+  "model_relation": "extension",
+  "model_elements": [],
+  "extracted_information": {
+    "negative_information": false,
+    "participant_a": {
+      "entity_type": "protein",
+      "entity_text": "FGFR3",
+      "in_model": true,
+      "identifier": "Uniprot:FGFR3_HUMAN",
+      "features": [],
+      "not_features": []
+    },
+    "participant_b": {
+      "entity_type": "protein",
+      "entity_text": "STAT1",
+      "in_model": false,
+      "identifier": "Uniprot:STAT1_HUMAN",
+      "features": [],
+      "not_features": []
+    },
+    "interaction_type": "adds_modification",
+    "modifications": [{
+      "site": 701,
+      "modification_type": "phosphorylation"
+    }]
+  },
+  "evidence": ["In HeLa cells however, we found\nslight STAT1(Y701) phosphorylation induced by wild-type\nFGFR3 as well as G380R, R248C and Y373C mutants, similar\nto Legeai-Mallet et al. [31], Plowright et al. [32] and Ronchetti et al.\n[7], who found STAT1 activation in cells expressing R248C or Y373C-FGFR3."]
+}
